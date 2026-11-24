@@ -766,12 +766,10 @@ function makeV4aEdit(kind: 'add' | 'delete' | 'update', path: string, raw: RawLi
   if (chunks.length === 0 && moveTo === null) throw new Exit2(`error: parse ${headerNo}`);
   return (tree) => {
     if (!safe(path)) throw new Fail('unsafe', path);
+    if (moveTo !== null && !safe(moveTo)) throw new Fail('unsafe', moveTo);
     const before = tree.get(path);
     if (before === null) throw new Fail('missing', path);
-    if (moveTo !== null) {
-      if (!safe(moveTo)) throw new Fail('unsafe', moveTo);
-      if (tree.get(moveTo) !== null) throw new Fail('exists', moveTo);
-    }
+    if (moveTo !== null && tree.get(moveTo) !== null) throw new Fail('exists', moveTo);
     const st = splitFile(before);
     let fileLines = st.lines;
     let cursor = 0;
