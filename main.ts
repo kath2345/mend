@@ -827,6 +827,8 @@ function makeV4aEdit(kind: 'add' | 'delete' | 'update', path: string, raw: RawLi
 // ---------------------------------------------------------------------------
 
 function run(args: string[]): { code: number; out: string[] } {
+  // Per-run state: a run must not see moves from an earlier run in this process.
+  moves.length = 0;
   let format: string | null = null;
   let check = false;
   let strict = false;
